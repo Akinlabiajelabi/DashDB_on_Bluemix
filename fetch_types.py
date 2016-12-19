@@ -1,3 +1,4 @@
+# Showing you, Ways to fetch Data from the DashDB
 import ibm_db
 
 connection = ibm_db.connect('DATABASE=dbname;uid=;pwd=password;hostname=hostname;port=50000;')

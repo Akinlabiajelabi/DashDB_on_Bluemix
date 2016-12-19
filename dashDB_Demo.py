@@ -17,13 +17,18 @@ LOG_FILENAME = "dashDB_DemoLogs.log"
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG,format='%(asctime)s, %(levelname)s, %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
+
+# DashDB class
 class DashDB:
+
 	def __init__(self):
 		self.connection=None
-		self.userid = "dash100629"
-		self.password = "tQd0KuLmwUeC"
-		self.hostname = "dashdb-entry-yp-dal09-09.services.dal.bluemix.net"
+		# You will get the following values when you create the dashdb
+		self.userid = "dash100629" # User id 
+ 		self.password = "tQd0KuLmwUeC" # password
+		self.hostname = "dashdb-entry-yp-dal09-09.services.dal.bluemix.net" # Hostname
 
+	# Function to initiate the dashdb connection 
 	def dashDBInit(self):
 		self.databaseConnectionInfo = {"Database name":"BLUDB","User ID":self.userid,"Password":self.password,"Host name":self.hostname,"Port number":"50000"}
 		self.DatabaseSchema = 'DASH'+self.userid[4:]
@@ -31,6 +36,7 @@ class DashDB:
 		dbtry = 0
 		while(dbtry <3):
 			try:
+				# If The application running in Bluemix all the necessary values you can get from the environment variables
 				if 'VCAP_SERVICES' in os.environ:
 				    hasVcap = True
 				    import json
@@ -47,16 +53,28 @@ class DashDB:
 				    hasVcap = False
 				    self.url = 'DATABASE=%s;uid=%s;pwd=%s;hostname=%s;port=%s;' % (self.databaseConnectionInfo["Database name"],self.databaseConnectionInfo["User ID"],self.databaseConnectionInfo["Password"],self.databaseConnectionInfo["Host name"],self.databaseConnectionInfo["Port number"])
 	   			print self.url
-				self.connection = ibm_db.connect(self.url, '', '')
+				# If The application is running in Local system, we are preparing the url 
+				self.connection = ibm_db.pconnect(self.url, '', '')
 				if (active(self.connection)):
-					print self.connection
+					print self.connection,"\t\n SUCCESSFULLY CONNECTED"
 					return self.connection
 			except Exception as dberror:
 				logging.error("dberror Exception %s"%(ibm_db.conn_errormsg()))
 				logging.error("dberror Exception %s"%dberror)
 				dbtry+=1
 		return False
+
+	# Function to close the dashdb connection 
+	def dbclose(self):
 		
+		try:
+			retrn = ibm_db.close(self.connection)
+			return retrn 
+		except Exception as dbcloseerror:
+			logging.error("dbclose Exception %s"%(dbcloseerror))				
+			return False
+
+	# Function to check whether the connection is alive or not 
 	def connectioncheck_handler(self):
 		try:
 			logging.info("connection is"+str(active(self.connection)))
@@ -76,6 +94,7 @@ class DashDB:
 		except Exception as e:
 			logging.error("The connectioncheck_handler error is %s"%(e))		
 
+	# Function to create the Table 
 	def dbCreate(self,tablename,col1,col2,col3,col4,col5):
 		self.connectioncheck_handler()
 
@@ -93,6 +112,7 @@ class DashDB:
 		return True
 		
 
+	# Function to Insert data to the created table 
 	def dbInsert(self,tablename,emailid,password,username,dateofcreation):
 		self.connectioncheck_handler()
 		try:
@@ -107,7 +127,8 @@ class DashDB:
 			logging.error("The dbInsert operation error is %s"%(ibm_db.stmt_errormsg()))
 			return False	
 		return True
-		
+	
+	# Function to update the Table value 
 	def dbUpdate(self,tablename,columnName,updatevalue,conditionColumnName1,conditionColumnValue1,conditionColumnName2,conditionColumnValue2):
 		self.connectioncheck_handler()
 
@@ -125,6 +146,7 @@ class DashDB:
 			return False
 		return True	
 
+	# Function to Delete a row from the Table 
 	def dbDelete(self,tablename,conditionColumnName1,conditionColumnValue1,conditionColumnName2,conditionColumnValue2):
 		self.connectioncheck_handler()
 		try:
@@ -140,6 +162,7 @@ class DashDB:
 			return False
 		return True
 
+	# Function to Fetch the Data from the Table	
 	def dbFetch(self,tablename):
 		self.connectioncheck_handler()
 		try:	
@@ -158,14 +181,17 @@ class DashDB:
 		except:		
 			logging.error("The dbFetch operation error is %s"%(ibm_db.stmt_errormsg()))	
 			return False
-		return data	
+		return data
+
+
+# Function starts here
 if __name__ == '__main__':
 	db = DashDB()
 	db.dashDBInit()
 
 	while True:
 		try:
-			inpt = raw_input("\tEnter the value \t\n0-Create table \t\n1-Insert Data \t\n2-Update Data \t\n3-Fetch Data \t\n4-Delete Data\n\t\t")
+			inpt = raw_input("\tEnter the value \t\n0-Create table \t\n1-Insert Data \t\n2-Update Data \t\n3-Fetch Data \t\n4-Delete Data \t\n5-Close Connection\n\t\t")
 
 			if inpt == "0":
 				tablename = "USERTABLE"
@@ -234,6 +260,13 @@ if __name__ == '__main__':
 					print "\t\t DATA DELETED SUCCESSFULLY"
 				else:
 					print "\t\t DATA DELETE FAILED"	
+			if inpt == "5":
+				close_return = db.dbclose()
+				if close_return == True:
+					print "\t\t Connection closed successfully"
+				else:
+					print "\t\t Connection not closed"
+
 		except KeyboardInterrupt:
 			print "\n\t\t\t oops!!! PRESSED ctr+c"
 			sys.exit()			
