@@ -7,7 +7,7 @@ This repository contains the sample programs for Dashdb using Python for the fol
 3) Insert data into a table </br>
 4) Update a value in a table </br>
 5) Delete the row from a table </br>
-6) Fetch data from the table, and  </br> 
+6) Fetch data from the table </br> 
 7) Disconnect </br>
 8) Exception handling
 
