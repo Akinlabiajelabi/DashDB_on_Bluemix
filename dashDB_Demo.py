@@ -193,8 +193,10 @@ if __name__ == '__main__':
 		try:
 			inpt = raw_input("\tEnter the value \t\n0-Create table \t\n1-Insert Data \t\n2-Update Data \t\n3-Fetch Data \t\n4-Delete Data \t\n5-Close Connection\n\t\t")
 
+			# This is the Table name that you want to give to your table, you can give the name you want.by default it is USERTABLE
+			tablename = "USERTABLE" 
+				
 			if inpt == "0":
-				tablename = "USERTABLE" # change the name you wish to 
 				col1 = "ID"
 				col2 = "EMAILID"
 				col3 = "PASSWORD"
@@ -206,7 +208,6 @@ if __name__ == '__main__':
 				else:
 					print "\t\t TABLE CREATE FAILED"	
 			if inpt == "1":
-				tablename = "USERTABLE" #give the same name you have given in line 197
 				emailid = raw_input("Enter the emailid:") 
 				password = raw_input("Enter the password:")
 				username = raw_input("Enter the username:")
@@ -218,7 +219,6 @@ if __name__ == '__main__':
 					print "\t\tDATA INSERT FAILED"
 
 			if inpt == "2":
-				tablename = "USERTABLE" #give the same name you have given in line 197
 				print "\t\t YOU HAVE SELECTED TO UPDATE THE DATA IN THE DASHDB TABLE\n \t\t SELECT ANY ONE OF THE COLUMNS TO UPDTE FROM FOLLOWING"
 				print "\t\t\t Either PASSWORD, or USERNAME You can update"
 				
@@ -237,7 +237,6 @@ if __name__ == '__main__':
 
 			if inpt == "3":
 				print "\n\t\t\t DATA FETCH OPERATION"
-				tablename = "USERTABLE" #give the same name you have given in line 197
 				data = db.dbFetch(tablename)
 				if data != None:
 					print "\t\t DATA FETCHED SUCCESSFULLY"
@@ -247,7 +246,6 @@ if __name__ == '__main__':
 			if inpt == "4":
 				print "\n\t\t\t DATA DELETION OPERATION"
 				
-				tablename = "USERTABLE" #give the same name you have given in line 197
 				conditionColumnName1 = "EMAILID"
 				conditionColumnValue1 = raw_input("Enter the EMAILID:")
 				conditionColumnName2 = "PASSWORD"
