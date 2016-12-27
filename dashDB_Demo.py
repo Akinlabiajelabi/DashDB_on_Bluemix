@@ -27,10 +27,10 @@ class DashDB:
 		self.userid = "dash100629" # User id 
  		self.password = "tQd0KuLmwUeC" # password
 		self.hostname = "dashdb-entry-yp-dal09-09.services.dal.bluemix.net" # Hostname
-
+		self.portnumber = "50000"
 	# Function to initiate the dashdb connection 
 	def dashDBInit(self):
-		self.databaseConnectionInfo = {"Database name":"BLUDB","User ID":self.userid,"Password":self.password,"Host name":self.hostname,"Port number":"50000"}
+		self.databaseConnectionInfo = {"Database name":"BLUDB","User ID":self.userid,"Password":self.password,"Host name":self.hostname,"Port number":self.portnumber}
 		self.DatabaseSchema = 'DASH'+self.userid[4:]
 		
 		dbtry = 0
@@ -194,7 +194,7 @@ if __name__ == '__main__':
 			inpt = raw_input("\tEnter the value \t\n0-Create table \t\n1-Insert Data \t\n2-Update Data \t\n3-Fetch Data \t\n4-Delete Data \t\n5-Close Connection\n\t\t")
 
 			if inpt == "0":
-				tablename = "USERTABLE"
+				tablename = "USERTABLE" # change the name you wish to 
 				col1 = "ID"
 				col2 = "EMAILID"
 				col3 = "PASSWORD"
@@ -206,7 +206,7 @@ if __name__ == '__main__':
 				else:
 					print "\t\t TABLE CREATE FAILED"	
 			if inpt == "1":
-				tablename = "USERTABLE"
+				tablename = "USERTABLE" #give the same name you have given in line 197
 				emailid = raw_input("Enter the emailid:") 
 				password = raw_input("Enter the password:")
 				username = raw_input("Enter the username:")
@@ -218,9 +218,9 @@ if __name__ == '__main__':
 					print "\t\tDATA INSERT FAILED"
 
 			if inpt == "2":
-				tablename = "USERTABLE"
-				print "\t\t YOU HAVE SELECTED TO UPDATE THE DATA IN THE DASHDB TABLE\n \t\t SELECT THE ANY ONE OF THE COLUMNS TO UPDTE FROM FOLLOWING"
-				print "\t\t\t PASSWORD, USERNAME "
+				tablename = "USERTABLE" #give the same name you have given in line 197
+				print "\t\t YOU HAVE SELECTED TO UPDATE THE DATA IN THE DASHDB TABLE\n \t\t SELECT ANY ONE OF THE COLUMNS TO UPDTE FROM FOLLOWING"
+				print "\t\t\t Either PASSWORD, or USERNAME You can update"
 				
 				columnName = raw_input("Enter the columnname to be updated :")
 				updatevalue = raw_input("Enter the updatevalue :")
@@ -237,7 +237,7 @@ if __name__ == '__main__':
 
 			if inpt == "3":
 				print "\n\t\t\t DATA FETCH OPERATION"
-				tablename = "USERTABLE"
+				tablename = "USERTABLE" #give the same name you have given in line 197
 				data = db.dbFetch(tablename)
 				if data != None:
 					print "\t\t DATA FETCHED SUCCESSFULLY"
@@ -247,7 +247,7 @@ if __name__ == '__main__':
 			if inpt == "4":
 				print "\n\t\t\t DATA DELETION OPERATION"
 				
-				tablename = "USERTABLE"
+				tablename = "USERTABLE" #give the same name you have given in line 197
 				conditionColumnName1 = "EMAILID"
 				conditionColumnValue1 = raw_input("Enter the EMAILID:")
 				conditionColumnName2 = "PASSWORD"
@@ -264,6 +264,7 @@ if __name__ == '__main__':
 				close_return = db.dbclose()
 				if close_return == True:
 					print "\t\t Connection closed successfully"
+					sys.exit()
 				else:
 					print "\t\t Connection not closed"
 
