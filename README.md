@@ -1,6 +1,9 @@
 # Getting started with Dashdb on Bluemix.
 This repository contains the sample codes for the following blog post.
 #Introduction
+
+This is the accompanying repository for this blog post[http://radiostud.io/getting-started-ibm-dashdb-using-python/]
+
 This repository contains the sample programs for Dashdb using Python for the following operations. 
 </br>1) Connect to the dashdb </br> 
 2) Create a table </br>
